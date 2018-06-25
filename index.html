@@ -1,0 +1,78 @@
+<html>
+
+<head>
+    <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
+</head>
+
+<body>
+    <div id='app'>
+        <textarea class='textarea' @scroll='textsrc' v-model='text.Headquarters' ref='Headquarters' rows="2"></textarea>
+    </div>
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            text: {
+                Headquarters: '',
+            },
+            state: true,
+            tiemr: null
+        },
+        mounted() {},
+        methods: {
+            tiemer() {
+                this.tiemr = setInterval(() => {
+                    this.text.Headquarters = this.text.Headquarters.slice(
+                        0,
+                        this.text.Headquarters.length - 1
+                    );
+                    if (this.$refs.Headquarters.scrollHeight / 35 == 2) {
+                        clearInterval(this.tiemr)
+                        this.tiemr = null
+                        this.state = true
+                    }
+
+                }, 10);
+            },
+            textsrc() {
+                this.$refs.Headquarters.scrollTo(0, 0)
+                let LineNumber = this.$refs.Headquarters.scrollHeight / 35;
+                console.log(this.state)
+                if (LineNumber => 2) {
+                    this.state = false;
+                } else {
+                    this.state = true;
+                };
+                !this.tiemr && !this.state && this.tiemer();
+                this.tiemr && this.state && clearInterval(this.tiemr);
+                if (this.state) {
+                    this.tiemr = null;
+                }
+            },
+        }
+    })
+</script>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .textarea {
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: url('./img/linebg.png') repeat;
+        outline: none;
+        position: relative;
+        line-height: 35px;
+        width: 100%;
+        font-size: 16px;
+        overflow: hidden;
+        resize: none;
+        font-family: -webkit-pictograph;
+    }
+</style>
+
+</html>
